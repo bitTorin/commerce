@@ -3,7 +3,7 @@
 {% block body %}
     <h2>Create Listing</h2>
 
-    <form action="{% url 'create' %}" method="POST" style="margin-top: 25px">
+    <form action="{% url 'create' listing.id %}" method="POST" style="margin-top: 25px">
       {% csrf_token %}
       <label for="descripion">Title: </label>
       <input value="{{ title }}" id="title" name="title">
@@ -12,7 +12,11 @@
       <textarea id="description" name="description" rows="3" cols="10" style="height: 35vh; width: 45vw; margin-bottom: 10px; margin-top: 10px">{{ description }}</textarea>
       <br>
       <label for="category">Category: </label>
-      <input value="{{ category }}" id="category" name="category">
+      <select name="category">
+        {% for category in category %}
+          <option value="{{ category.id }}" placeholder="Select Category">{{ category }}</option>
+        {% endfor %}
+      </select>
       <br>
       <input type="submit" value="Submit">
     </form>

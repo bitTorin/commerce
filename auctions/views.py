@@ -69,21 +69,25 @@ def create(request):
     if request.method == "POST":
         form = Listing(request.POST)
         if form.is_valid():
-            title = form.cleaned_data["title"]
-            description = form.cleaned_data["description"]
-            revise_entry = util.save_entry(title, description)
-            return redirect (index)
+            # TODO
+            # title = form.cleaned_data["title"]
+            # description = form.cleaned_data["description"]
+            # revise_entry = util.save_entry(title, description)
+            return redirect ("listing", args=(listing.id))
     else:
-        return render(request, "auctions/create.html")
+        return render(request, "auctions/create.html", {
+            "categories": listing.category.all()
+        })
 
 
 def listing(request, flight_id):
     try:
         listing = Listing.objects.get(pk=listing_id)
-    except: Listing.DoesNotExist:
+    except Listing.DoesNotExist:
         raise Http404("Listing not found.")
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "bids": listing.bids.all(),
-        "comments": listing.comments.all()
+        "comments": listing.comments.all(),
+        "category": listing.category()
     })

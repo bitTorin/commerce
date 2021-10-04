@@ -24,13 +24,15 @@ class Listing(models.Model):
 class Bid(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
     price = MoneyField(decimal_places=2, default=0, default_currency='USD', max_digits=11,)
+    user_bid = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_bid")
 
     def __str__(self):
-        return f"{self.item} : {self.price}"
+        return f"{self.user_bid} : {self.item} : {self.price}"
 
 class Comment(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
     comment = models.CharField(max_length=500, default='Enter Comment Here')
+    user_comment = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_comment")
 
     def __str__(self):
-        return f"{self.item} : {self.comment}"
+        return f"{self.item} : {self.user_comment}- '{self.comment}'"
