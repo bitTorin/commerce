@@ -61,3 +61,21 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def create(request):
+    if request.method == "POST":
+        form = Listing(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            revise_entry = util.save_entry(title, description)
+            return redirect (index)
+    else:
+        return render(request, "commerce/create.html", {
+            "title": title.capitalize
+        })
+
+
+def listing(request):
+    pass
