@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
+from djmoney.models.fields import MoneyField
 from django.db import models
+
 
 
 class User(AbstractUser):
@@ -7,11 +9,10 @@ class User(AbstractUser):
 
 class Listing(models.Model):
     title = models.CharField(max_length=64)
-    description = models.CharField(max_length=200)
-    pass
+    description = models.CharField(max_length=500)
 
 class Bid(models.Model):
-    pass
+    price = MoneyField(decimal_places=2, default=0, default_currency='USD', max_digits=11,)
 
 class Comment(models.Model):
-    pass
+    comment = models.CharField(max_length=500, default='Enter Comment Here')
