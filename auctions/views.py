@@ -4,11 +4,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Listing, Bid, Comment, Category
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        "listings": Listing.objects.all()
+    })
 
 
 def login_view(request):
@@ -72,10 +74,8 @@ def create(request):
             revise_entry = util.save_entry(title, description)
             return redirect (index)
     else:
-        return render(request, "commerce/create.html", {
-            "title": title.capitalize
-        })
+        return render(request, "auctions/create.html")
 
 
-def listing(request):
-    pass
+def listing(request, flight_id):
+    listing = Listing.objects.get(pk=listing_id)
