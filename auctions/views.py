@@ -78,4 +78,12 @@ def create(request):
 
 
 def listing(request, flight_id):
-    listing = Listing.objects.get(pk=listing_id)
+    try:
+        listing = Listing.objects.get(pk=listing_id)
+    except: Listing.DoesNotExist:
+        raise Http404("Listing not found.")
+    return render(request, "auctions/listing.html", {
+        "listing": listing,
+        "bids": listing.bids.all(),
+        "comments": listing.comments.all()
+    })
