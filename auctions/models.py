@@ -4,3 +4,14 @@ from django.db import models
 
 class User(AbstractUser):
     pass
+
+class Listing(models.Model):
+    title = models.CharField(max_length=64)
+    description = models.CharField(max_length=200)
+    pass
+
+class Bid(models.Model):
+    pass
+
+class Comment(models.Model):
+    pass
