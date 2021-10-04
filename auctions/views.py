@@ -73,10 +73,11 @@ def create(request):
             # title = form.cleaned_data["title"]
             # description = form.cleaned_data["description"]
             # revise_entry = util.save_entry(title, description)
-            return redirect ("listing", args=(listing.id))
+            # return redirect ("listing", args=(listing.id))
+            return redirect (request, "auctions/listing.html")
     else:
         return render(request, "auctions/create.html", {
-            "categories": listing.category.all()
+            # "categories": listing.category.all()
         })
 
 
