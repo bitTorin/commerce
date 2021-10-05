@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -67,21 +67,20 @@ def register(request):
 
 def create(request):
     if request.method == "POST":
-        form = Listing(request.POST)
-        if form.is_valid():
-            # TODO
-            # title = form.cleaned_data["title"]
-            # description = form.cleaned_data["description"]
-            # revise_entry = util.save_entry(title, description)
-            # return redirect ("listing", args=(listing.id))
-            return redirect (request, "auctions/listing.html")
+        listing = Listing.objects.get(id=listing_id)
+        title = Listing.objects.get(request.POST["title"])
+        description = Listing.objects.get(request.POST["description"])
+
+        listing.add(listing)
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        # return redirect (request, "auctions/listing.html")
     else:
         return render(request, "auctions/create.html", {
             # "categories": listing.category.all()
         })
 
 
-def listing(request, flight_id):
+def listing(request, listing_id):
     try:
         listing = Listing.objects.get(pk=listing_id)
     except Listing.DoesNotExist:
