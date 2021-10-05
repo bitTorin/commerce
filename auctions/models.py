@@ -20,7 +20,7 @@ class Listing(models.Model):
     user_listing = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_listing")
 
     def __str__(self):
-        return f"{self.title} : {self.description}"
+        return f"{self.user_listing} : {self.title} : {self.description}"
 
 class Bid(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
