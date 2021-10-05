@@ -6,9 +6,10 @@
     <form action="{% url 'create' %}" method="POST" style="margin-top: 25px">
       {% csrf_token %}
       <label for="category">Category: </label>
-      <select name="category">
-        {% for category in category %}
-          <option value="{{ category.id }}" placeholder="Select Category">{{ category }}</option>
+      <select name="category" required>
+        <option value="" disabled selected hidden>Select...</option>
+        {% for category in categories %}
+          <option value="{{ category.name }}">{{ category.name }}</option>
         {% endfor %}
       </select>
       <br>
@@ -19,7 +20,7 @@
       <br>
       <textarea id="description" name="description" rows="3" cols="10" style="height: 35vh; width: 45vw; margin-bottom: 10px; margin-top: 10px">{{ description }}</textarea>
       <br>
-      <label for="image_url">Image: </label>
+      <label for="image_url">Image Link: </label>
       <input name="image_url">
       <br>
       <input type="submit" value="Submit">

@@ -76,7 +76,7 @@ def create(request):
         # return redirect (request, "auctions/listing.html")
     else:
         return render(request, "auctions/create.html", {
-            # "categories": listing.category.all()
+            "categories": Category.objects.all()
         })
 
 
