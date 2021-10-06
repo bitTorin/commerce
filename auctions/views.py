@@ -67,11 +67,13 @@ def register(request):
 
 def create(request):
     if request.method == "POST":
-        listing = Listing.objects.get(id=listing_id)
+        # listing_id = Listing.objects.get(pk=listing_id)
         title = Listing.objects.get(request.POST["title"])
         description = Listing.objects.get(request.POST["description"])
+        category = Listing.objects.get(request.POST["category"])
+        listing_user = Listing.objects.get(request.user.username)
 
-        listing.add(listing)
+        Listing.add(listing)
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
         # return redirect (request, "auctions/listing.html")
     else:
@@ -89,5 +91,8 @@ def listing(request, listing_id):
         "listing": listing,
         "bids": listing.bids.all(),
         "comments": listing.comments.all(),
-        "category": listing.category()
+        "category": listing.category(),
+        "listing_user": listing.listing_user,
+        "image_url": listing.image_url,
+        "description": listing.description
     })
