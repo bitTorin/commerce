@@ -3,9 +3,15 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
 from .models import User, Listing, Bid, Comment, Category
 
+class NewListingForm(forms.Form):
+    title = forms.CharField(label="title")
+    description = forms.CharField(label="description")
+    category = forms.CharField(label="category")
+    image_url = forms.URLField(label="image_url")
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -67,13 +73,18 @@ def register(request):
 
 def create(request):
     if request.method == "POST":
-        # listing_id = Listing.objects.get(pk=listing_id)
-        title = request.POST["title"]
-        description = request.POST["description"]
-        category = request.POST["category"]
-        listing_user = request.user.username
+        form = NewListingForm(request.POST)
+        if form.is_valid():
+            listing = Listing()
+            # listing_id = Listing.objects.get(pk=listing_id)
+            listing.title = form.cleaned_data["title"]
+            listing.description = form.cleaned_data["description"]
+            # listing.category = form.cleaned_data["category"]
+            # listing.listing_user = request.user.username
 
-        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+            listing.save()
+
+            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
     else:
         return render(request, "auctions/create.html", {

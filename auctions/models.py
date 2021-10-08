@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from djmoney.models.fields import MoneyField
 from django.db import models
 
-
-
 class User(AbstractUser):
     pass
 
@@ -17,7 +15,8 @@ class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=500)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category")
-    listing_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listing_user")
+    # listing_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listing_user")
+    image_url = models.URLField()
 
     def __str__(self):
         return f"{self.listing_user} : {self.title} : {self.description}"
