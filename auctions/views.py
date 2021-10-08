@@ -68,14 +68,13 @@ def register(request):
 def create(request):
     if request.method == "POST":
         # listing_id = Listing.objects.get(pk=listing_id)
-        title = Listing.objects.get(request.POST["title"])
-        description = Listing.objects.get(request.POST["description"])
-        category = Listing.objects.get(request.POST["category"])
-        listing_user = Listing.objects.get(request.user.username)
+        title = request.POST["title"]
+        description = request.POST["description"]
+        category = request.POST["category"]
+        listing_user = request.user.username
 
-        Listing.add(listing)
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
-        # return redirect (request, "auctions/listing.html")
+
     else:
         return render(request, "auctions/create.html", {
             "categories": Category.objects.all()
