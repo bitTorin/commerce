@@ -1,15 +1,73 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Listing: {{ listing.name }}</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-auto">
+        <div class="card">
+          <div class="card-header">
+            <btn id="watchlist-btn" class="btn" action="{% url 'watchlist' %}" method="POST">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-bookmarks" viewBox="0 0 20 20">
+                <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1H4z"/>
+                <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
+              </svg>
+            </btn>
+          </div>
+          <div class="card-img-bottom">
+            <img src="{{ listing.image_url }}">
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-2">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title font-weight-bold">{{ listing.title }}</h5>
+            <p class="card-text">{{ listing.description }}</p>
+          </div>
+          <ul class="list-group list-group-flush" id="accordian">
+            <li class="list-group-item">Listed by: <a href="">{{ listing.listing_user }}</a></li>
+            <li class="list-group-item">Category: <a href="">{{ listing.category }}</a></li>
+            <li class="list-group-item">
+              Details
+              <btn id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-expand" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8zM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10z"/>
+                </svg>
+              </btn>
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <p>Contract Address:</p>
+                <p>Token ID:</p>
+                <p>Token Standard:</p>
+                <p>Contract Name:</p>
+                <p>Blockchain:</p>
+                <p>Created:</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-auto">
+        <div class="card">
+          <div class="card-title font-weight-bold">Current Bid: </div>
+          <ul class="list-group list-group-flush">
+            <li>
+              <input>
+              <btn class="btn btn-primary">Place Bid</btn>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col col-lg-2">
+        <div class="card">
+          <div class="card-header">
+            <h5>Comments</h5>
+          </div>
+          <div class
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <img src="{{ listing.image_url }}">
-    <br>
-    <h5>{{ listing.description }}</h5>
-
-    <h3>Details</h3>
-    <ul>
-      <li>Listed by: <a href="">{{ listing.listing_user }}</a></li>
-      <li>Category: <a href="">{{ listing.category }}</a></li>
-    </ul>
 {% endblock %}

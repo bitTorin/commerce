@@ -100,6 +100,7 @@ def listing(request, listing_id):
         raise Http404("Listing not found.")
     return render(request, "auctions/listing.html", {
         "listing": listing,
+        "title": listing.title,
         "bids": listing.bids.all(),
         "comments": listing.comments.all(),
         # "category": listing.category(),

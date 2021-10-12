@@ -24,8 +24,9 @@
                 <!-- <li class="nav-item">
                   <a class="nav-link" href="{% url 'category' %}">Categories</a>
                 </li> -->
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
+                <li class="nav-item d-flex justify-content-between align-items-center">
+                  <a class="nav-link" href="{% url 'watchlist' %}">Watchlist <span class="badge badge-primary badge-pill">watchlist.count</span></a>
+
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
