@@ -39,7 +39,7 @@ class Comment(models.Model):
 
 class Watchlist(models.Model):
     watchlist_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist_user", default=User)
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing")
+    listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_id", default="0")
 
     def __str__(self):
-        return f"{self.watchlist_user} : {self.listing}"
+        return f"{self.watchlist_user} : {self.listing_title}"

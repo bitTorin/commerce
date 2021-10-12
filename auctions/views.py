@@ -6,13 +6,16 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 
-from .models import User, Listing, Bid, Comment, Category
+from .models import User, Listing, Bid, Comment, Category, Watchlist
 
 class NewListingForm(forms.Form):
     title = forms.CharField(label="title")
     description = forms.CharField(label="description")
     category = forms.CharField(label="category")
     image_url = forms.URLField(label="image_url")
+
+class WatchlistForm(forms.Form):
+    listing_id = forms.CharField(label="listing_id")
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -108,14 +111,23 @@ def listing(request, listing_id):
         # "category": listing.category(),
         "listing_user": listing.listing_user,
         "image_url": listing.image_url,
-        "description": listing.description
+        "description": listing.description,
     })
 
 @login_required
 def watchlist(request):
-    return render(request, "auctions/watchlist.html", {
-        "watchlist": Watchlist.objects.all()
-    })
+    if request.method == "POST":
+        form = WatchlistForm(request.POST)
+        if form.is_valid():
+            watchlist = Watchlist()
+            watchlist.listing_id = form.cleaned_data["listing_id"]
+
+            watchlist.save()
+            listing_id = watchlist.listing_id
+
+            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+    else:
+        return render(request, "auctions/index.html")
 
 def category(request):
     return render(request, "auctions/category.html", {
