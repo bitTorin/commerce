@@ -112,3 +112,8 @@ def watchlist(request):
     return render(request, "auctions/watchlist.html", {
         "watchlist": Watchlist.objects.all()
     })
+
+def category(request):
+    return render(request, "auctions/category.html", {
+        "categories": Category.objects.all()
+    })
