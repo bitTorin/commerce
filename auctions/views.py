@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
@@ -71,6 +72,7 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         form = NewListingForm(request.POST)
@@ -109,6 +111,7 @@ def listing(request, listing_id):
         "description": listing.description
     })
 
+@login_required
 def watchlist(request):
     return render(request, "auctions/watchlist.html", {
         "watchlist": Watchlist.objects.all()
