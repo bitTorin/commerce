@@ -3,11 +3,19 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    <ul>
-      {% for listing in listing %}
-        <li>{{ listing.title }}</li>
+    <div class="card-deck" style="display: flex">
+      {% for listing in listings %}
+        <div class="card" style="width: 20vw;">
+          <img src="{{ listing.image_url }}" style="max-height: 40vh">
+          <div class="card-body">
+            <h5 class="card-title">{{ listing.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Current Price: </h6>
+            <p class="card-text">{{ listing.description }}</p>
+            <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View Bids</a>
+          </div>
+        </div>
       {% endfor %}
-    </ul>
+    </div>
 
 
 {% endblock %}
