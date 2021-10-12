@@ -15,11 +15,11 @@ class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=500)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category")
-    # listing_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listing_user")
+    listing_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listing_user", default=User)
     image_url = models.URLField()
 
     def __str__(self):
-        return f"{self.listing_user} : {self.title} : {self.description}"
+        return f"{self.title} : {self.description}"
 
 class Bid(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")

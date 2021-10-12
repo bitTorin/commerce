@@ -1,14 +1,15 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Listing: {{ listing }}</h2>
+    <h2>Listing: {{ listing.name }}</h2>
 
-    <img href="{{ listing.image_url }}">
+    <img src="{{ listing.image_url }}">
+    <br>
     <h5>{{ listing.description }}</h5>
 
     <h3>Details</h3>
     <ul>
       <li>Listed by: <a href="">{{ listing.listing_user }}</a></li>
-      <li>Category: {{ listing.category }}</li>
+      <li>Category: <a href="">{{ listing.category }}</a></li>
     </ul>
 {% endblock %}

@@ -76,13 +76,14 @@ def create(request):
         form = NewListingForm(request.POST)
         if form.is_valid():
             listing = Listing()
-            # listing_id = Listing.objects.get(pk=listing_id)
             listing.title = form.cleaned_data["title"]
             listing.description = form.cleaned_data["description"]
-            # listing.category = form.cleaned_data["category"]
-            # listing.listing_user = request.user.username
-
+            listing.image_url = form.cleaned_data["image_url"]
+            listing.category = Category.objects.get(name = (request.POST["category"]))
+            listing.listing_user = User.objects.get(username = request.user.username)
+            
             listing.save()
+            listing_id = listing.id
 
             return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
@@ -101,7 +102,7 @@ def listing(request, listing_id):
         "listing": listing,
         "bids": listing.bids.all(),
         "comments": listing.comments.all(),
-        "category": listing.category(),
+        # "category": listing.category(),
         "listing_user": listing.listing_user,
         "image_url": listing.image_url,
         "description": listing.description
