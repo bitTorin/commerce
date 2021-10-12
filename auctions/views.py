@@ -81,7 +81,7 @@ def create(request):
             listing.image_url = form.cleaned_data["image_url"]
             listing.category = Category.objects.get(name = (request.POST["category"]))
             listing.listing_user = User.objects.get(username = request.user.username)
-            
+
             listing.save()
             listing_id = listing.id
 
@@ -106,4 +106,9 @@ def listing(request, listing_id):
         "listing_user": listing.listing_user,
         "image_url": listing.image_url,
         "description": listing.description
+    })
+
+def watchlist(request):
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": Watchlist.objects.all()
     })

@@ -36,3 +36,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.item} : {self.comment_user}- '{self.comment}'"
+
+class Watchlist(models.Model):
+    watchlist_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist_user", default=User)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing")
