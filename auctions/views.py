@@ -125,9 +125,13 @@ def watchlist(request):
             watchlist.save()
             listing_id = watchlist.listing_id
 
-            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+            return render(request, "auctions/watchlist.html", {
+                "watchlist": Watchlist.objects.all()
+            })
     else:
-        return render(request, "auctions/index.html")
+        return render(request, 'listing.html', {'form': form}, args=(listing_id,))
+
+
 
 def category(request):
     return render(request, "auctions/category.html", {

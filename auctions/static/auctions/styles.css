@@ -2,6 +2,11 @@ body {
     padding: 10px;
 }
 
-#watchlist-btn {
-  
+
+#yes_watch {
+  color: blue;
+}
+
+#no_watch {
+  color: grey;
 }
