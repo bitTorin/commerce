@@ -8,10 +8,10 @@
           <div class="card-header">
             <form action="{% url 'watchlist' %}" method="POST">
               {% csrf_token %}
-              {% if listing_id in watchlist %}
-              <input id="listing_id" class="btn btn-primary" type="submit" value="{{ listing.id }}">
+              {% if listing_title in watchlist %}
+              <input id="listing_title" class="btn btn-primary" type="submit" value="{{ listing.title }}">
               {% else %}
-              <input id="listing_id" class="btn btn-secondary" type="submit" value="{{ listing.id }}">
+              <input id="listing_title" class="btn btn-secondary" type="submit" value="{{ listing.title }}">
               {% endif %}
             </form>
           </div>

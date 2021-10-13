@@ -15,7 +15,7 @@ class NewListingForm(forms.Form):
     image_url = forms.URLField(label="image_url")
 
 class WatchlistForm(forms.Form):
-    listing_id = forms.CharField(label="listing_id")
+    listing_title = forms.CharField(label="listing_title")
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -120,14 +120,13 @@ def watchlist(request):
         form = WatchlistForm(request.POST)
         if form.is_valid():
             watchlist = Watchlist()
-            watchlist.listing_id = form.cleaned_data["listing_id"]
+            watchlist.listing_title = form.cleaned_data["listing_title"]
 
             watchlist.save()
             listing_id = watchlist.listing_id
 
-            return render(request, "auctions/watchlist.html", {
-                "watchlist": Watchlist.objects.all()
-            })
+            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+
     else:
         return render(request, 'listing.html', {'form': form}, args=(listing_id,))
 
