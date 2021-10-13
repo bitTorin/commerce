@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django import forms
 
@@ -125,15 +126,15 @@ def watchlist(request):
 @login_required
 def watchlist_add(request, listing_id):
     add_listing = get_object_or_404(Listing, pk=listing_id)
-    obj, created = Watchlist.objects.get_or_create(user=request.user, item_id=listing_id)
+    obj, created = Watchlist.objects.get_or_create(user=request.user, id=listing_id)
 
-    if Watchlist.objects.filter(watchlist_user = request.user, listing = listing_id).exists():
+    if Watchlist.objects.filter(user = request.user, listing = listing_id).exists():
         messages.add_message(request, messages.ERROR, "Item already in watchlist")
-        return HttpResponseRedirect(reverse("auctions/index.html"))
+        return HttpResponseRedirect(reverse("index"))
 
     user_list, created = Watchlist.objects.get_or_create(user=request.user)
 
-    user_list.item.add(add_listing)
+    user_list.listing.add(add_listing)
     messages.add_message(request, messages.SUCCESS, "Item added to watchlist")
     return render(request, "auctions/watchlist.html")
 
