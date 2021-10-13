@@ -114,22 +114,33 @@ def listing(request, listing_id):
         "description": listing.description,
     })
 
+
 @login_required
 def watchlist(request):
-    if request.method == "POST":
-        form = WatchlistForm(request.POST)
-        if form.is_valid():
-            watchlist = Watchlist()
-            watchlist.listing_title = form.cleaned_data["listing_title"]
+    return render(request, "auctions/watchlist.html", {
+        "user": request.user
+    })
 
-            watchlist.save()
-            listing_id = watchlist.listing_id
 
-            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+@login_required
+def watchlist_add(request, listing_id):
+    add_listing = get_object_or_404(Listing, pk=listing_id)
+    obj, created = Watchlist.objects.get_or_create(user=request.user, item_id=listing_id)
 
-    else:
-        return render(request, 'listing.html', {'form': form}, args=(listing_id,))
+    if Watchlist.objects.filter(watchlist_user = request.user, listing = listing_id).exists():
+        messages.add_message(request, messages.ERROR, "Item already in watchlist")
+        return HttpResponseRedirect(reverse("auctions/index.html"))
 
+    user_list, created = Watchlist.objects.get_or_create(user=request.user)
+
+    user_list.item.add(add_listing)
+    messages.add_message(request, messages.SUCCESS, "Item added to watchlist")
+    return render(request, "auctions/watchlist.html")
+
+
+@login_required
+def watchlist_remove(request, listing_id):
+    return render (request, "auctions/watchlist.html")
 
 
 def category(request):

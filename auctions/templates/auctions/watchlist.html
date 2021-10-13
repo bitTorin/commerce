@@ -4,7 +4,7 @@
     <h2>Watchlist</h2>
 
     <div class="card-deck" style="display: flex">
-      {% for listing_id in watchlist %}
+      {% for listing in watchlist %}
         <div class="card" style="width: 20vw;">
           <img src="{{ listing.image_url }}" style="max-height: 40vh">
           <div class="card-body">

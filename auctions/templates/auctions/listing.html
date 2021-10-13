@@ -6,14 +6,15 @@
       <div class="col-md-auto">
         <div class="card">
           <div class="card-header">
-            <form action="{% url 'watchlist' %}" method="POST">
-              {% csrf_token %}
-              {% if listing_title in watchlist %}
-              <input id="listing_title" class="btn btn-primary" type="submit" value="{{ listing.title }}">
-              {% else %}
-              <input id="listing_title" class="btn btn-secondary" type="submit" value="{{ listing.title }}">
-              {% endif %}
-            </form>
+            <a href="{% url 'watchlist_remove' %}" role="button" class="btn btn-outline-success btn-lg">Remove from Watchlist</a>
+            {% if listing.title in watchlist %}
+            <a href="{% url 'watchlist_remove' %}" role="button" class="btn btn-outline-success btn-lg">Remove from Watchlist</a>
+            {% endif %}
+
+            {% if listing.title not in watchlist %}
+            <a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-outline-success btn-lg">Add to Watchlist</a>
+            {% endif %}
+
           </div>
           <div class="card-img-bottom">
             <img src="{{ listing.image_url }}">
