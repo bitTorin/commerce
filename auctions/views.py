@@ -120,9 +120,10 @@ def listing(request, listing_id):
 def watchlist(request, user):
     return render(request, "auctions/watchlist.html", {
         "user": user,
-        "title": listing.title,
-        "description": listing.description,
-        "image_url": listing.image_url,
+        "listing": Watchlist.listing,
+        "title": Watchlist.listing.title,
+        "description": Watchlist.listing.description,
+        "image_url": Watchlist.listing.image_url,
     })
 
 
@@ -148,19 +149,20 @@ def watchlist_add(request, listing_id):
     try:
         # user_list = Watchlist.objects.get(user = request.user.username, id = listing_id)
         # user_list = Watchlist.objects.get(user = request.user.username)
-        listing = Listing.objects.get(pk=listing_id)
-        user_list = Watchlist.objects.get(user = request.user.username, id = listing_id)
+        add_listing = Listing.objects.get(pk=listing_id)
+        # user_list = Watchlist.objects.get(id = listing_id, user = request.user.username)
     except KeyError:
         return HttpResponseBadRequest("Bad Request: no listing chosen")
     except Listing.DoesNotExist:
         return HttpResponseBadRequest("Bad Request: listing does not exist")
-    
-    if Watchlist.objects.filter(user = user, listing = listing_id).exists():
+    if Watchlist.objects.filter(user = request.user, listing = listing_id).exists():
         messages.add_message(request, messages.ERROR, "Item already in watchlist")
-        return HttpResponseRedirect(reverse("listing", listing_id))
+        # return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
     else:
-        user_list.listing.add(listing)
-        return HttpResponseRedirect(reverse("watchlist", user))
+        user_list, created = Watchlist.objects.get_or_create(user = request.user)
+        user_list.listing.add(add_listing)
+        return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
 
 
 @login_required
