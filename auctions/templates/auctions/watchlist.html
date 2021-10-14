@@ -3,19 +3,22 @@
 {% block body %}
     <h2>{{ user|capfirst }}'s Watchlist</h2>
 
-    <div class="card-deck" style="display: flex">
-      {% for listing in listings %}
-        <div class="card" style="width: 20vw;">
-          <img src="{{ listing.image_url }}" style="max-height: 40vh">
-          <div class="card-body">
-            <h5 class="card-title">{{ listing.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Current Price: </h6>
-            <p class="card-text">{{ listing.description }}</p>
-            <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
-          </div>
-        </div>
-      {% endfor %}
+    <div class="container" style="display: flex">
+      <div class="row">
+        <ul class="list-group">
+          {% for listing in listings %}
+          <li class="list-group-item d-flex justify-content-between align-items-center" style="width: 60vw;">
+            <img src="{{ listing.image_url }}" style="max-height: 40vh">
+            <div class="card-body">
+              <h5 class="card-title">{{ listing.title }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Current Price: </h6>
+              <p class="card-text">{{ listing.description }}</p>
+              <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-
 
 {% endblock %}
