@@ -117,30 +117,58 @@ def listing(request, listing_id):
 
 
 @login_required
-def watchlist(request):
+def watchlist(request, user):
     return render(request, "auctions/watchlist.html", {
-        "user": request.user
+        "user": user,
+        "title": listing.title,
+        "description": listing.description,
+        "image_url": listing.image_url,
     })
 
 
 @login_required
 def watchlist_add(request, listing_id):
-    add_listing = get_object_or_404(Listing, pk=listing_id)
-    obj, created = Watchlist.objects.get_or_create(user=request.user, id=listing_id)
+    # add_listing = get_object_or_404(Listing, pk=listing_id)
+    # obj, created = Watchlist.objects.get_or_create(user=request.user, id=listing_id)
+    #
+    # if Watchlist.objects.filter(user = request.user, listing = listing_id).exists():
+    #     messages.add_message(request, messages.ERROR, "Item already in watchlist")
+    #     return HttpResponseRedirect(reverse("index"))
+    #
+    # user_list, created = Watchlist.objects.get_or_create(user=request.user)
+    #
+    # user_list.listing.add(add_listing)
+    # messages.add_message(request, messages.SUCCESS, "Item added to watchlist")
+    # return render(request, "auctions/watchlist.html", {
+    #     "user" = request.user.username
+    # })
 
-    if Watchlist.objects.filter(user = request.user, listing = listing_id).exists():
+    # Revision
+
+    try:
+        # user_list = Watchlist.objects.get(user = request.user.username, id = listing_id)
+        # user_list = Watchlist.objects.get(user = request.user.username)
+        listing = Listing.objects.get(pk=listing_id)
+        user_list = Watchlist.objects.get(user = request.user.username, id = listing_id)
+    except KeyError:
+        return HttpResponseBadRequest("Bad Request: no listing chosen")
+    except Listing.DoesNotExist:
+        return HttpResponseBadRequest("Bad Request: listing does not exist")
+    
+    if Watchlist.objects.filter(user = user, listing = listing_id).exists():
         messages.add_message(request, messages.ERROR, "Item already in watchlist")
-        return HttpResponseRedirect(reverse("index"))
-
-    user_list, created = Watchlist.objects.get_or_create(user=request.user)
-
-    user_list.listing.add(add_listing)
-    messages.add_message(request, messages.SUCCESS, "Item added to watchlist")
-    return render(request, "auctions/watchlist.html")
+        return HttpResponseRedirect(reverse("listing", listing_id))
+    else:
+        user_list.listing.add(listing)
+        return HttpResponseRedirect(reverse("watchlist", user))
 
 
 @login_required
 def watchlist_remove(request, listing_id):
+    remove_listing = get_object_or_404(Listing, pk=listing_id)
+    watchlistings = Watchlist.objects.all()
+
+    watchlistings.listing.remove(remove_listing)
     return render (request, "auctions/watchlist.html")
 
 

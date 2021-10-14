@@ -6,7 +6,11 @@
       <div class="col-md-auto">
         <div class="card">
           <div class="card-header">
-            <a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-outline-primary">Add to Watchlist</a>
+            <form action="{% url 'watchlist_add' listing.id %}" method="POST">
+              {% csrf_token %}
+              <input type="submit" value="Add to Watchlist">
+            </form>
+            <!-- <a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-outline-primary">Add to Watchlist</a> -->
             {% if listing in watchlist %}
             <a href="{% url 'watchlist_remove' %}" role="button" class="btn btn-outline-success btn-lg">Remove from Watchlist</a>
             {% endif %}

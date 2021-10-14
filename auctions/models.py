@@ -19,7 +19,7 @@ class Listing(models.Model):
     image_url = models.URLField()
 
     def __str__(self):
-        return f"{self.title} : {self.description}"
+        return f"{self.title}"
 
 class Bid(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
@@ -38,8 +38,8 @@ class Comment(models.Model):
         return f"{self.item} : {self.comment_user}- '{self.comment}'"
 
 class Watchlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist_user", null=True)
-    listing = models.ManyToManyField(Listing)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist_user", default=User)
+    listing = models.ManyToManyField(Listing, blank=True, related_name="watchlist")
 
     def __str__(self):
-        return f"{self.watchlist_user}"
+        return f"{self.user}"
