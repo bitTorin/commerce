@@ -113,14 +113,15 @@ def listing(request, listing_id):
         "listing_user": listing.listing_user,
         "image_url": listing.image_url,
         "description": listing.description,
+        "watchlist": Watchlist.objects.all()
     })
 
 
 @login_required
 def watchlist(request):
     user_id = request.user.pk
-    user_watchlist = Watchlist.objects.get(user_watchlist=user_id)
-    watch_items = user_watchlist.watchlist_items.all()
+    user_list = Watchlist.objects.get(user_watchlist=user_id)
+    watch_items = user_list.watchlist_items.all()
     return render(request, "auctions/watchlist.html", {
         # "user": user_watchlist,
         "listings": watch_items.all()
@@ -129,31 +130,29 @@ def watchlist(request):
 
 @login_required
 def watchlist_add(request, listing_id):
-    try:
-        add_listing = Listing.objects.get(pk=listing_id)
-    except KeyError:
-        return HttpResponseBadRequest("Bad Request: no listing chosen")
-    except Listing.DoesNotExist:
-        return HttpResponseBadRequest("Bad Request: listing does not exist")
-    if Watchlist.objects.filter(user_watchlist = request.user, watchlist_items = listing_id).exists():
-        messages.add_message(request, messages.ERROR, "Item already in watchlist")
-        # return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
-        # return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
-        return HttpResponseRedirect(reverse("watchlist"))
-    else:
-        user_list, created = Watchlist.objects.get_or_create(user_watchlist = request.user)
-        user_list.watchlist_items.add(add_listing)
-        # return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
-        return HttpResponseRedirect(reverse("watchlist"))
+    if request.method == "POST":
+        try:
+            add_listing = Listing.objects.get(pk=listing_id)
+        except KeyError:
+            return HttpResponseBadRequest("Bad Request: no listing chosen")
+        except Listing.DoesNotExist:
+            return HttpResponseBadRequest("Bad Request: listing does not exist")
+        if Watchlist.objects.filter(user_watchlist = request.user, watchlist_items = listing_id).exists():
+            messages.add_message(request, messages.ERROR, "Item already in watchlist")
+            return HttpResponseRedirect(reverse("watchlist"))
+        else:
+            user_list, created = Watchlist.objects.get_or_create(user_watchlist = request.user)
+            user_list.watchlist_items.add(add_listing)
+            return HttpResponseRedirect(reverse("watchlist"))
 
 
 @login_required
 def watchlist_remove(request, listing_id):
-    remove_listing = get_object_or_404(Listing, pk=listing_id)
-    watchlistings = Watchlist.objects.all()
-
-    watchlistings.listing.remove(remove_listing)
-    return render (request, "auctions/watchlist.html")
+    if request.method == "POST":
+        remove_listing = get_object_or_404(Listing, pk=listing_id)
+        user_list = Watchlist.objects.get(user_watchlist = request.user)
+        user_list.watchlist_items.remove(remove_listing)
+        return HttpResponseRedirect(reverse("watchlist"))
 
 
 def category(request):
