@@ -7,7 +7,7 @@ class ListingAdmin(admin.ModelAdmin):
     list_display = ("id", "category", "listing_user","__str__", "description", "image_url")
 
 class WatchlistAdmin(admin.ModelAdmin):
-    filter_horizontal = ("listings",)
+    filter_horizontal = ("watchlist_items",)
 
 admin.site.register(User)
 admin.site.register(Listing, ListingAdmin)

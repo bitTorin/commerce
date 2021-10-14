@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>{{ user }}'s Watchlist</h2>
+    <h2>{{ user|capfirst }}'s Watchlist</h2>
 
     <div class="card-deck" style="display: flex">
       {% for listing in listings %}

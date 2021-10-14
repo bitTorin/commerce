@@ -117,11 +117,13 @@ def listing(request, listing_id):
 
 
 @login_required
-def watchlist(request, user):
-    watchlist = Watchlist.objects.filter(user=user).all(pk=watchlist.flight.id)
+def watchlist(request):
+    user_id = request.user.pk
+    user_watchlist = Watchlist.objects.get(user_watchlist=user_id)
+    watch_items = user_watchlist.watchlist_items.all()
     return render(request, "auctions/watchlist.html", {
-        "user": user,
-        "listings": listing.watchlist_listings.all()
+        # "user": user_watchlist,
+        "listings": watch_items.all()
     })
 
 
@@ -133,14 +135,16 @@ def watchlist_add(request, listing_id):
         return HttpResponseBadRequest("Bad Request: no listing chosen")
     except Listing.DoesNotExist:
         return HttpResponseBadRequest("Bad Request: listing does not exist")
-    if Watchlist.objects.filter(user = request.user, listings = listing_id).exists():
+    if Watchlist.objects.filter(user_watchlist = request.user, watchlist_items = listing_id).exists():
         messages.add_message(request, messages.ERROR, "Item already in watchlist")
         # return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
-        return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
+        # return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
+        return HttpResponseRedirect(reverse("watchlist"))
     else:
-        user_list, created = Watchlist.objects.get_or_create(user = request.user)
-        user_list.listings.add(add_listing)
-        return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
+        user_list, created = Watchlist.objects.get_or_create(user_watchlist = request.user)
+        user_list.watchlist_items.add(add_listing)
+        # return HttpResponseRedirect(reverse("watchlist", args=(request.user.username,)))
+        return HttpResponseRedirect(reverse("watchlist"))
 
 
 @login_required

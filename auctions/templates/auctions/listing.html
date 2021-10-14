@@ -12,7 +12,7 @@
             </form>
             <!-- <a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-outline-primary">Add to Watchlist</a> -->
             {% if listing in watchlist %}
-            <a href="{% url 'watchlist_remove' %}" role="button" class="btn btn-outline-success btn-lg">Remove from Watchlist</a>
+            <a href="{% url 'watchlist_remove' listing.id %}" role="button" class="btn btn-outline-success btn-lg">Remove from Watchlist</a>
             {% endif %}
 
             {% if listing not in watchlist %}

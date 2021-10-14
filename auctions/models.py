@@ -38,8 +38,8 @@ class Comment(models.Model):
         return f"{self.item} : {self.comment_user}- '{self.comment}'"
 
 class Watchlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist_user", default=User)
-    listings = models.ManyToManyField(Listing, blank=True, related_name="watchlist_listings")
+    user_watchlist = models.ForeignKey(User, on_delete=models.CASCADE)
+    watchlist_items = models.ManyToManyField(Listing, blank=True)
 
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.user_watchlist}"
