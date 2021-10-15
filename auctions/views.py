@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django import forms
+from django.forms import ModelForm
 
 from .models import User, Listing, Bid, Comment, Category, Watchlist
 
@@ -18,8 +19,9 @@ class NewListingForm(forms.Form):
 class WatchlistForm(forms.Form):
     listing_title = forms.CharField(label="listing_title")
 
-class NewBidForm(forms.Form):
-    bid_price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
+class NewBidForm(forms.ModelForm):
+    class Meta:
+        bid_price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
 
 def index(request):
     return render(request, "auctions/index.html", {
