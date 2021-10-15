@@ -18,6 +18,9 @@ class NewListingForm(forms.Form):
 class WatchlistForm(forms.Form):
     listing_title = forms.CharField(label="listing_title")
 
+class NewBidForm(forms.Form):
+    bid_price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
+
 def index(request):
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all()
@@ -154,6 +157,24 @@ def watchlist_remove(request, listing_id):
         user_list.watchlist_items.remove(remove_listing)
         return HttpResponseRedirect(reverse("watchlist"))
 
+@login_required
+def place_bid(request, listing_id):
+    if request.method == "POST":
+        form = NewBid(request.Form)
+        if form.is_valid():
+            bid = Bid()
+            listing = Listing.objects.get(pk=listing_id)
+
+
+@login_required
+def accept_bid(request, listing_id):
+    user = request.user
+    listing = Listing.objects.get(pk=listing_id)
+    listing_user = listing.listing_user
+    if user = listing_user:
+        # TODO
+    else:
+        pass
 
 def category(request):
     return render(request, "auctions/category.html", {
