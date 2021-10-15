@@ -173,8 +173,9 @@ def accept_bid(request, listing_id):
     user = request.user
     listing = Listing.objects.get(pk=listing_id)
     listing_user = listing.listing_user
-    if user = listing_user:
-        # TODO
+    if user == listing_user:
+        # TODO:
+        pass
     else:
         pass
 
