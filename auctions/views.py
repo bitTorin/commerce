@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django import forms
 from django.forms import ModelForm
+from django.db.models import Max
 
 from .models import User, Listing, Bid, Comment, Category, Watchlist
 
@@ -20,8 +21,11 @@ class WatchlistForm(forms.Form):
     listing_title = forms.CharField(label="listing_title")
 
 class NewBidForm(forms.ModelForm):
+    price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
+
     class Meta:
-        bid_price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
+        model = Bid
+        fields = ('price',)
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -118,7 +122,9 @@ def listing(request, listing_id):
         "listing_user": listing.listing_user,
         "image_url": listing.image_url,
         "description": listing.description,
-        "watchlist": Watchlist.objects.all()
+        "watchlist": Watchlist.objects.all(),
+        "bids":Bid.objects.all(),
+        "top_bid":Bid.objects.aggregate(Max('price'))
     })
 
 
@@ -162,11 +168,18 @@ def watchlist_remove(request, listing_id):
 @login_required
 def place_bid(request, listing_id):
     if request.method == "POST":
-        form = NewBid(request.Form)
+        form = NewBidForm(request.POST)
+        bid_user = request.user
         if form.is_valid():
             bid = Bid()
+            bid.price = form.cleaned_data["price"]
             listing = Listing.objects.get(pk=listing_id)
-
+            # listing_user = listing.user
+            # if bid_user is not listing_user:
+            listing.bid.add(bid)
+            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+    else:
+        pass
 
 @login_required
 def accept_bid(request, listing_id):

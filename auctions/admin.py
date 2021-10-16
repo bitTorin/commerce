@@ -9,9 +9,12 @@ class ListingAdmin(admin.ModelAdmin):
 class WatchlistAdmin(admin.ModelAdmin):
     filter_horizontal = ("watchlist_items",)
 
+class BidAdmin(admin.ModelAdmin):
+    list_display = ("id", "__str__")
+
 admin.site.register(User)
 admin.site.register(Listing, ListingAdmin)
-admin.site.register(Bid)
+admin.site.register(Bid, BidAdmin)
 admin.site.register(Comment)
 admin.site.register(Category)
 admin.site.register(Watchlist, WatchlistAdmin)
