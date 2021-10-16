@@ -116,7 +116,7 @@ def listing(request, listing_id):
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "title": listing.title,
-        "bids": listing.bids.all(),
+        # "bids": listing.bids.all(),
         "comments": listing.comments.all(),
         # "category": listing.category(),
         "listing_user": listing.listing_user,
@@ -173,10 +173,10 @@ def place_bid(request, listing_id):
         if form.is_valid():
             bid = Bid()
             bid.price = form.cleaned_data["price"]
-            listing = Listing.objects.get(pk=listing_id)
+            bid.listing = Listing.objects.get(pk=listing_id)
             # listing_user = listing.user
             # if bid_user is not listing_user:
-            listing.bid.add(bid)
+            bid.listing.add(bid)
             return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
     else:
         pass
