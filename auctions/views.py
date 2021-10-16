@@ -123,8 +123,8 @@ def listing(request, listing_id):
         "image_url": listing.image_url,
         "description": listing.description,
         "watchlist": Watchlist.objects.all(),
-        "bids":Bid.objects.all(),
-        "top_bid":Bid.objects.aggregate(Max('price'))
+        "bids":Bid.objects.order_by('-price').all(),
+        "top_bid":Bid.objects.order_by('-price')[0],
     })
 
 
