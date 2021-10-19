@@ -169,14 +169,14 @@ def watchlist_remove(request, listing_id):
 def place_bid(request, listing_id):
     if request.method == "POST":
         form = NewBidForm(request.POST)
-        bid_user = request.user
         if form.is_valid():
             bid = Bid()
             bid.price = form.cleaned_data["price"]
             bid.listing = Listing.objects.get(pk=listing_id)
+            bid.bid_user = request.user
             # listing_user = listing.user
             # if bid_user is not listing_user:
-            bid.listing.add(bid)
+            bid.save()
             return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
     else:
         pass
