@@ -9,4 +9,6 @@ def watchlist_renderer(request):
             "watchlist_items": watch_items.all()
         }
     else:
-        pass
+        return {
+            "watchlist_items": None
+        }
