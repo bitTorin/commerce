@@ -28,7 +28,7 @@ class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"{self.bid_user} : {self.price} : {self.listing}"
+        return f"{self.price}"
 
 class Comment(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")

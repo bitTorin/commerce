@@ -59,7 +59,11 @@
     <div class="row">
       <div class="col-md-auto">
         <div class="card">
-          <div class="card-title font-weight-bold">Current Bid: ${{ top_bid|floatformat:2 }}</div>
+          {% if not top_bid %}
+          <div class="card-title font-weight-bold">Current Bid: None</div>
+          {% else %}
+          <div class="card-title font-weight-bold">Current Bid: {{ top_bid }}</div>
+          {% endif %}
           <ul class="list-group list-group-flush">
             <!-- <li>
               <input>
