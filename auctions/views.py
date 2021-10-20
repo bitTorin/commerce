@@ -18,6 +18,7 @@ class NewListingForm(forms.Form):
     description = forms.CharField(label="description")
     category = forms.CharField(label="category")
     image_url = forms.URLField(label="image_url")
+    starting_bid = forms.DecimalField(max_digits=11, decimal_places=2, label="starting_bid")
 
 class WatchlistForm(forms.Form):
     listing_title = forms.CharField(label="listing_title")
@@ -102,7 +103,14 @@ def create(request):
             listing.listing_user = User.objects.get(username = request.user.username)
 
             listing.save()
+            
             listing_id = listing.id
+
+            bid = Bid()
+            bid.price = form.cleaned_data["starting_bid"]
+            bid.listing = Listing.objects.get(pk=listing_id)
+            bid.bid_user = request.user
+            bid.save()
 
             return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
@@ -180,11 +188,18 @@ def place_bid(request, listing_id):
             bid.listing = Listing.objects.get(pk=listing_id)
             bid.bid_user = request.user
             top_bid = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
-            if bid.price > top_bid.price:
-                bid.save()
-                return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
-            # listing_user = listing.user
-            # if bid_user is not listing_user:
+            listing_user = bid.listing.listing_user
+            print(bid.bid_user)
+            print(listing_user)
+            #TODO
+            if bid.bid_user is not listing_user:
+                if bid.price > top_bid.price:
+                    bid.save()
+                    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+                else:
+                    return HttpResponse("Bid amount too low. Please try again.")
+            else:
+                return HttpResponse("You may not bid on your own auction.")
 
 
     else:
