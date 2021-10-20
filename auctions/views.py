@@ -178,12 +178,15 @@ def place_bid(request, listing_id):
             bid.price = form.cleaned_data["price"]
             bid.listing = Listing.objects.get(pk=listing_id)
             bid.bid_user = request.user
-            listing_user = listing.user
-            if bid_user is not listing_user:
-                bid.save()
-                return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+            bid.save()
+            # listing_user = listing.user
+            # if bid_user is not listing_user:
+            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+
     else:
-        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        form = NewBidForm()
+
+    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
 @login_required
 def accept_bid(request, listing_id):
