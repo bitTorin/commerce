@@ -59,22 +59,46 @@
     <div class="row">
       <div class="col-md-auto">
         <div class="card">
-          {% if not top_bid %}
-          <div class="card-title font-weight-bold">Current Bid: None</div>
+          {% if not bids %}
+          <div class="card-title font-weight-bold">No Bids</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <form action="{% url 'place_bid' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input id="bid_price" name="bid_price" placeholder="$0.00" step="0.01" type="number">
+                <input type="submit" value="Place Bid">
+              </form>
+            </li>
+          </ul>
           {% else %}
           <div class="card-title font-weight-bold">Current Bid: {{ top_bid }}</div>
-          {% endif %}
           <ul class="list-group list-group-flush">
-            <!-- <li>
-              <input>
-              <btn class="btn btn-primary">Place Bid</btn>
-            </li> -->
-            <form action="{% url 'place_bid' listing.id %}" method="POST">
-              {% csrf_token %}
-              <input id="bid_price" name="bid_price" placeholder="$0.00" step="0.01" type="number">
-              <input type="submit" value="Place Bid">
-            </form>
+            <li class="list-group-item">
+              <form action="{% url 'place_bid' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input id="bid_price" name="bid_price" placeholder="$0.00" step="0.01" type="number">
+                <input type="submit" value="Place Bid">
+              </form>
+            </li>
+            <li class="list-group-item">
+              Bid History
+              {% for bid in bids %}
+                <table>
+                  <tr>
+                    <th>Date</th>
+                    <th>Price</th>
+                    <th>User</th>
+                  </tr>
+                  <tr>
+                    <td>Date</td>
+                    <td>{{ bid.price }}</td>
+                    <td>{{ user }}</td>
+                  </tr>
+                </table>
+              {% endfor %}
+            </li>
           </ul>
+          {% endif %}
         </div>
       </div>
       <div class="col col-lg-2">

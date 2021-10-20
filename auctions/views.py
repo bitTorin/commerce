@@ -8,6 +8,7 @@ from django.urls import reverse
 from django import forms
 from django.forms import ModelForm
 from django.db.models import Max
+from djmoney.models.fields import MoneyField
 
 from .models import User, Listing, Bid, Comment, Category, Watchlist
 
@@ -29,7 +30,7 @@ class NewBidForm(forms.ModelForm):
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.all()
+        "listings": Listing.objects.all(),
     })
 
 
@@ -123,8 +124,9 @@ def listing(request, listing_id):
         "image_url": listing.image_url,
         "description": listing.description,
         "watchlist": Watchlist.objects.all(),
-        "bids":Bid.objects.order_by('-price').all(),
-        "top_bid":Bid.objects.order_by('-price')[0],
+        "bids":Bid.objects.filter(listing = listing).order_by('-price').all(),
+        # "top_bid": Bid.objects.filter(listing = listing).aggregate(Max('price')),
+        "top_bid":Bid.objects.filter(listing = listing).order_by('-price')[0],
     })
 
 
@@ -174,12 +176,12 @@ def place_bid(request, listing_id):
             bid.price = form.cleaned_data["price"]
             bid.listing = Listing.objects.get(pk=listing_id)
             bid.bid_user = request.user
-            # listing_user = listing.user
-            # if bid_user is not listing_user:
-            bid.save()
-            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+            listing_user = listing.user
+            if bid_user is not listing_user:
+                bid.save()
+                return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
     else:
-        pass
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
 @login_required
 def accept_bid(request, listing_id):
