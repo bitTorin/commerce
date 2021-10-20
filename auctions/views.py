@@ -103,7 +103,7 @@ def create(request):
             listing.listing_user = User.objects.get(username = request.user.username)
 
             listing.save()
-            
+
             listing_id = listing.id
 
             bid = Bid()
@@ -128,7 +128,6 @@ def listing(request, listing_id):
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "title": listing.title,
-        # "bids": listing.bids.all(),
         "comments": listing.comments.all(),
         # "category": listing.category(),
         "listing_user": listing.listing_user,
@@ -136,8 +135,8 @@ def listing(request, listing_id):
         "description": listing.description,
         "watchlist": Watchlist.objects.all(),
         "bids":Bid.objects.filter(listing = listing).order_by('-price').all(),
-        # "top_bid": Bid.objects.filter(listing = listing).aggregate(Max('price')),
         "top_bid":Bid.objects.filter(listing = listing).order_by('-price')[0],
+        "user": User.objects.get(username = request.user.username)
     })
 
 
