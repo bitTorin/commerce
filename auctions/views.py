@@ -9,6 +9,7 @@ from django import forms
 from django.forms import ModelForm
 from django.db.models import Max
 from djmoney.models.fields import MoneyField
+from djmoney.money import Money
 
 from .models import User, Listing, Bid, Comment, Category, Watchlist
 
@@ -21,8 +22,8 @@ class NewListingForm(forms.Form):
 class WatchlistForm(forms.Form):
     listing_title = forms.CharField(label="listing_title")
 
-class NewBidForm(forms.ModelForm):
-    price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
+class NewBidForm(forms.Form):
+    bid_price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
 
     class Meta:
         model = Bid
@@ -175,13 +176,16 @@ def place_bid(request, listing_id):
         form = NewBidForm(request.POST)
         if form.is_valid():
             bid = Bid()
-            bid.price = form.cleaned_data["price"]
+            bid.price = form.cleaned_data["bid_price"]
             bid.listing = Listing.objects.get(pk=listing_id)
             bid.bid_user = request.user
-            bid.save()
+            top_bid = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
+            if bid.price > top_bid.price:
+                bid.save()
+                return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
             # listing_user = listing.user
             # if bid_user is not listing_user:
-            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+
 
     else:
         form = NewBidForm()
