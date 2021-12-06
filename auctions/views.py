@@ -125,6 +125,11 @@ def listing(request, listing_id):
         listing = Listing.objects.get(pk=listing_id)
     except Listing.DoesNotExist:
         raise Http404("Listing not found.")
+    try:
+        user = User.objects.get(username = request.user.username)
+    except User.DoesNotExist:
+        user = "null"
+
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "title": listing.title,
@@ -136,7 +141,7 @@ def listing(request, listing_id):
         "watchlist": Watchlist.objects.all(),
         "bids":Bid.objects.filter(listing = listing).order_by('-price').all(),
         "top_bid":Bid.objects.filter(listing = listing).order_by('-price')[0],
-        "user": User.objects.get(username = request.user.username)
+        "user": user,
     })
 
 
@@ -188,15 +193,22 @@ def place_bid(request, listing_id):
             bid.bid_user = request.user
             top_bid = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
             listing_user = bid.listing.listing_user
-            print(bid.bid_user)
+            print(top_bid.bid_user)
             print(listing_user)
             #TODO
             if bid.bid_user is not listing_user:
-                if bid.price > top_bid.price:
-                    bid.save()
-                    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+                if top_bid.bid_user is not listing_user:
+                    if bid.price > top_bid.price:
+                        bid.save()
+                        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+                    else:
+                        return HttpResponse("Bid amount too low. Please try again.")
                 else:
-                    return HttpResponse("Bid amount too low. Please try again.")
+                    if bid.price >= top_bid.price:
+                        bid.save()
+                        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+                    else:
+                        return HttpResponse("Bid amount too low. Please try again.")
             else:
                 return HttpResponse("You may not bid on your own auction.")
 
