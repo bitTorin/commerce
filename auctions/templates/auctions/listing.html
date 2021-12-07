@@ -59,7 +59,7 @@
     <div class="row">
       <div class="col-md-auto">
         <div class="card">
-          {% if listing_user is user %}
+          {% if listing_user == user %}
           <div class="card-title font-weight-bold">Top Bid: {{ top_bid }}</div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
