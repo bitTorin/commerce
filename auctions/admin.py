@@ -4,7 +4,7 @@ from .models import User, Listing, Bid, Comment, Category, Watchlist
 
 # Register your models here.
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ("id", "category", "listing_user", "starting_bid", "__str__", "description", "image_url")
+    list_display = ("id", "active_status", "category", "listing_user", "starting_bid", "__str__", "description", "image_url")
 
 class WatchlistAdmin(admin.ModelAdmin):
     filter_horizontal = ("watchlist_items",)

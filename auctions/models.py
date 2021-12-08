@@ -19,6 +19,7 @@ class Listing(models.Model):
     listing_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listing_user", default=User)
     image_url = models.URLField()
     starting_bid = models.ForeignKey('Bid', on_delete=models.CASCADE, null=True, related_name='+')
+    active_status = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.title}"

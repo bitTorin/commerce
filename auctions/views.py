@@ -193,9 +193,9 @@ def place_bid(request, listing_id):
             bid.bid_user = request.user
             top_bid = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
             listing_user = bid.listing.listing_user
-            print(top_bid.bid_user)
-            print(listing_user)
-            #TODO
+            # print(top_bid.bid_user)
+            # print(listing_user)
+            # #TODO
             if bid.bid_user is not listing_user:
                 if top_bid.bid_user is not listing_user:
                     if bid.price > top_bid.price:
@@ -226,9 +226,12 @@ def accept_bid(request, listing_id):
     if user == listing_user:
         bid = Bid()
         bid.listing = Listing.objects.get(pk=listing_id)
-        bid.winning = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
+        winning_bid = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
+        # winning_user = top_bid.bid_user
+        listing.active_status = False
+        listing.save()
 
-        pass
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
     else:
         pass
 
