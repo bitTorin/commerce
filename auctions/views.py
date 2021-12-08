@@ -151,7 +151,6 @@ def watchlist(request):
     user_list = Watchlist.objects.get(user_watchlist=user_id)
     watch_items = user_list.watchlist_items.all()
     return render(request, "auctions/watchlist.html", {
-        # "user": user_watchlist,
         "listings": watch_items.all()
     })
 
