@@ -12,9 +12,12 @@ class WatchlistAdmin(admin.ModelAdmin):
 class BidAdmin(admin.ModelAdmin):
     list_display = ("id", "__str__", "bid_user", "listing")
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("id", "item", "user", "text")
+
 admin.site.register(User)
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Bid, BidAdmin)
-admin.site.register(Comment)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category)
 admin.site.register(Watchlist, WatchlistAdmin)

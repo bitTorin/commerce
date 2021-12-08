@@ -23,6 +23,13 @@ class NewListingForm(forms.Form):
 class WatchlistForm(forms.Form):
     listing_title = forms.CharField(label="listing_title")
 
+class CommentForm(forms.Form):
+    comment_text = forms.CharField(label="comment_text")
+
+    class Meta:
+        model = Comment
+        fields = ('text',)
+
 class NewBidForm(forms.Form):
     bid_price = forms.DecimalField(max_digits=11, decimal_places=2, label="bid_price")
 
@@ -192,9 +199,6 @@ def place_bid(request, listing_id):
             bid.bid_user = request.user
             top_bid = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
             listing_user = bid.listing.listing_user
-            # print(top_bid.bid_user)
-            # print(listing_user)
-            # #TODO
             if bid.bid_user is not listing_user:
                 if top_bid.bid_user is not listing_user:
                     if bid.price > top_bid.price:
@@ -226,13 +230,28 @@ def accept_bid(request, listing_id):
         bid = Bid()
         bid.listing = Listing.objects.get(pk=listing_id)
         winning_bid = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
-        # winning_user = top_bid.bid_user
         listing.active_status = False
         listing.save()
 
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
     else:
         pass
+
+@login_required
+def comment(request, listing_id):
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment()
+            comment.text = form.cleaned_data["comment_text"]
+            comment.item = Listing.objects.get(pk=listing_id)
+            comment.user = request.user
+            comment.save()
+            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+    else:
+        form = NewCommentForm()
+
+    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
 def category(request):
     return render(request, "auctions/category.html", {

@@ -182,7 +182,27 @@
       <div class="col col-lg-2">
         <div class="card">
           <div class="card-header">
-            <h5>Comments</h5>
+            <ul class="list-group list-group-flush">
+              <h5>Comments</h5>
+              <li class="list-group-item">
+                <table>
+                  {% for comment in comments %}
+                    <tr>
+                      <td>Date</td>
+                      <td>{{ comment.user }}</td>
+                      <td>{{ comment.text }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+              </li>
+              <li class="list-group-item">
+                <form action="{% url 'comment' listing.id %}" method="POST">
+                  {% csrf_token %}
+                  <input id="comment_text" name="comment_text" placeholder="Enter Comment Here">
+                  <input type="submit" value="Submit">
+                </form>
+              </li>
+            </ul>
           </div>
           <div class></div>
         </div>
