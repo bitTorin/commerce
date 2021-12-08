@@ -249,11 +249,21 @@ def comment(request, listing_id):
             comment.save()
             return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
     else:
-        form = NewCommentForm()
+        form = CommentForm()
 
     return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
-def category(request):
+def category(request, specific_cat):
+    category_list = Category.objects.all()
+    listings = Listing.objects.get(category=specific_cat)
     return render(request, "auctions/category.html", {
-        "categories": Category.objects.all()
+        "categories": category_list,
+        "listings": listings,
     })
+
+    # user_id = request.user.pk
+    # user_list = Watchlist.objects.get(user_watchlist=user_id)
+    # watch_items = user_list.watchlist_items.all()
+    # return render(request, "auctions/watchlist.html", {
+    #     "listings": watch_items.all()
+    # })

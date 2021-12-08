@@ -1,0 +1,57 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Categories</h2>
+    <ul class="nav">
+      {% for category in categories %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' art %}">{{ name }}</a>
+      </li>
+      {% endfor %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' collectibles %}">Collectibles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' domains %}">Domain Names</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' music %}">Music</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' sports %}">Sports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' trading %}">Trading Cards</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' utility %}">Utility</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' virtual %}">Virtual Worlds</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'category' other %}">Other</a>
+      </li>
+    </ul>
+    <div class="container" style="width: 80vw">
+      <!-- <div class="row"> -->
+        <div class="card-deck" style="display: flex">
+          {% for listing in listings %}
+            <!-- if listing.active_status == True -->
+              <div class="card" style="width: 20vw;">
+                <img src="{{ listing.image_url }}" style="max-height: 40vh">
+                <div class="card-body">
+                  <h5 class="card-title">{{ listing.title }}</h5>
+                  <p class="card-text">{{ listing.description }}</p>
+                  <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            <!--  endif  -->
+          {% endfor %}
+        <!-- </div> -->
+      </div>
+    </div>
+
+
+
+{% endblock %}
