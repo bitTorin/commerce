@@ -254,12 +254,14 @@ def comment(request, listing_id):
     return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
 def category(request, category_name):
-    # category_list = Category.objects.all()
+    category_list = Category.objects.all()
     # ind_category = Category.objects.get(name = category_name)
-    listings = Listing.objects.filter(category = category_name).all()
+    cat = Category()
+    cat.name = category_name
+    listings = Listing.objects.filter(category = cat)
     return render(request, "auctions/category.html", {
-        # "categories": category_list,
-        "category": category_name,
+        "categories": category_list,
+        "category": cat.name,
         "listings": listings,
     })
 
