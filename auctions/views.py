@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest, Http404
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django import forms
@@ -224,7 +224,10 @@ def accept_bid(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
     listing_user = listing.listing_user
     if user == listing_user:
-        # TODO:
+        bid = Bid()
+        bid.listing = Listing.objects.get(pk=listing_id)
+        bid.winning = Bid.objects.filter(listing = bid.listing).order_by('-price').first()
+
         pass
     else:
         pass
