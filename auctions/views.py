@@ -10,6 +10,7 @@ from django.forms import ModelForm
 from django.db.models import Max
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
+from django.utils.text import slugify
 
 from .models import User, Listing, Bid, Comment, Category, Watchlist
 
@@ -253,15 +254,13 @@ def comment(request, listing_id):
 
     return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
-def category(request, category_name):
+def category(request, slug):
     category_list = Category.objects.all()
-    # ind_category = Category.objects.get(name = category_name)
-    cat = Category()
-    cat.name = category_name
-    listings = Listing.objects.filter(category = cat)
+    cat = get_object_or_404(Category, slug=slug)
+    listings = Listing.objects.all().filter(category = cat.name)
     return render(request, "auctions/category.html", {
         "categories": category_list,
-        "category": cat.name,
+        "category": cat,
         "listings": listings,
     })
 

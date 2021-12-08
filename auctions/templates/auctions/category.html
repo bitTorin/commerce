@@ -5,7 +5,7 @@
     <ul class="nav">
       {% for category in categories %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'category' category.name %}">{{ category.name }}</a>
+        <a class="nav-link" href="{% url 'category' category.slug %}">{{ category.name }}</a>
       </li>
       {% endfor %}
     </ul>
