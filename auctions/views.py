@@ -40,8 +40,6 @@ class NewBidForm(forms.Form):
 def index(request):
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all(),
-        # "bids": Bid.objects.all(),
-        # "top_bid": Listing.objects.filter(bids).order_by('-price')[0],
     })
 
 

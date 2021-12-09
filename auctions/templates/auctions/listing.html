@@ -36,9 +36,6 @@
           <ul class="list-group list-group-flush" id="accordian">
             <li class="list-group-item">Listed by: <a href="">{{ listing.listing_user }}</a></li>
             <li class="list-group-item">Category: <a href="">{{ listing.category.name }}</a></li>
-            <li class="list-group-item">
-              Details
-            </li>
           </ul>
         </div>
       </div>
@@ -61,12 +58,10 @@
                 {% for bid in bids %}
                   <table>
                     <tr>
-                      <th>Date</th>
                       <th>Price</th>
                       <th>User</th>
                     </tr>
                     <tr>
-                      <td>Date</td>
                       <td>{{ bid.price }}</td>
                       <td>{{ bid.bid_user }}</td>
                     </tr>
@@ -89,12 +84,10 @@
                   {% for bid in bids %}
                     <table>
                       <tr>
-                        <th>Date</th>
                         <th>Price</th>
                         <th>User</th>
                       </tr>
                       <tr>
-                        <td>Date</td>
                         <td>{{ bid.price }}</td>
                         <td>{{ bid.bid_user }}</td>
                       </tr>
@@ -108,23 +101,15 @@
             <div class="card-title font-weight-bold">You closed this auction.</div>
             <div class="card-title font-weight-bold">Winning bid: {{ top_bid.price }} by <a href="">{{ top_bid.bid_user }}</a></div>
             <ul class="list-group list-group-flush">
-              <!-- <li class="list-group-item">
-                <form action="{% url 'accept_bid' listing.id %}" method="POST">
-                  {% csrf_token %}
-                  <input type="submit" value="Close Auction">
-                </form>
-              </li> -->
               <li class="list-group-item">
                 Bid History
                 {% for bid in bids %}
                   <table>
                     <tr>
-                      <th>Date</th>
                       <th>Price</th>
                       <th>User</th>
                     </tr>
                     <tr>
-                      <td>Date</td>
                       <td>{{ bid.price }}</td>
                       <td>{{ bid.bid_user }}</td>
                     </tr>
@@ -140,12 +125,10 @@
                 {% for bid in bids %}
                   <table>
                     <tr>
-                      <th>Date</th>
                       <th>Price</th>
                       <th>User</th>
                     </tr>
                     <tr>
-                      <td>Date</td>
                       <td>{{ bid.price }}</td>
                       <td>{{ bid.bid_user }}</td>
                     </tr>
@@ -162,12 +145,10 @@
                   {% for bid in bids %}
                     <table>
                       <tr>
-                        <th>Date</th>
                         <th>Price</th>
                         <th>User</th>
                       </tr>
                       <tr>
-                        <td>Date</td>
                         <td>{{ bid.price }}</td>
                         <td>{{ bid.bid_user }}</td>
                       </tr>
@@ -188,7 +169,6 @@
                 <table>
                   {% for comment in comments %}
                     <tr>
-                      <td>Date</td>
                       <td>{{ comment.user }}</td>
                       <td>{{ comment.text }}</td>
                     </tr>
@@ -204,7 +184,6 @@
               </li>
             </ul>
           </div>
-          <div class></div>
         </div>
       </div>
     </div>
