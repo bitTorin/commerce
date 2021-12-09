@@ -10,7 +10,6 @@ from django.forms import ModelForm
 from django.db.models import Max
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
-from django.utils.text import slugify
 
 from .models import User, Listing, Bid, Comment, Category, Watchlist
 
@@ -142,7 +141,6 @@ def listing(request, listing_id):
         "listing": listing,
         "title": listing.title,
         "comments": listing.comments.all(),
-        # "category": listing.category(),
         "listing_user": listing.listing_user,
         "image_url": listing.image_url,
         "description": listing.description,
@@ -256,13 +254,22 @@ def comment(request, listing_id):
 
 def category(request, slug):
     category_list = Category.objects.all()
-    cat = get_object_or_404(Category, slug=slug)
-    listings = Listing.objects.all().filter(category = cat.name)
-    return render(request, "auctions/category.html", {
-        "categories": category_list,
-        "category": cat,
-        "listings": listings,
-    })
+    
+    if slug == 'all':
+        listings = Listing.objects.all()
+        return render(request, "auctions/category.html", {
+            "categories": category_list,
+            "listings": listings
+        })
+
+    else:
+        cat = get_object_or_404(Category, slug=slug)
+        listings = Listing.objects.all().filter(category = cat.name)
+        return render(request, "auctions/category.html", {
+            "categories": category_list,
+            "category": cat,
+            "listings": listings,
+        })
 
     # user_id = request.user.pk
     # user_list = Watchlist.objects.get(user_watchlist=user_id)
