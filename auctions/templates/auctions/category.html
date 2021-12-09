@@ -13,7 +13,7 @@
       <!-- <div class="row"> -->
         <div class="card-deck" style="display: flex">
           {% for listing in listings %}
-            <!-- if listing.active_status == True -->
+            {% if listing.active_status == True %}
               <div class="card" style="width: 20vw;">
                 <img src="{{ listing.image_url }}" style="max-height: 40vh">
                 <div class="card-body">
@@ -22,10 +22,12 @@
                   <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
                 </div>
               </div>
-            <!--  endif  -->
+            {% endif %} 
+          {% empty %}
+          <h6>No active listings in this category</h6>
           {% endfor %}
-        <!-- </div> -->
-      </div>
+        </div>
+      <!-- </div> -->
     </div>
 
 

@@ -263,17 +263,10 @@ def category(request, slug):
         })
 
     else:
-        cat = get_object_or_404(Category, slug=slug)
-        listings = Listing.objects.all().filter(category = cat.name)
+        input_slug = slug
+        cat = Category.objects.get(slug=input_slug)
+        listings = Listing.objects.all().filter(category = cat)
         return render(request, "auctions/category.html", {
             "categories": category_list,
-            "category": cat,
             "listings": listings,
         })
-
-    # user_id = request.user.pk
-    # user_list = Watchlist.objects.get(user_watchlist=user_id)
-    # watch_items = user_list.watchlist_items.all()
-    # return render(request, "auctions/watchlist.html", {
-    #     "listings": watch_items.all()
-    # })
