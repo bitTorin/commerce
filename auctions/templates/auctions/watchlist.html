@@ -4,7 +4,7 @@
     <h2>{{ user|capfirst }}'s Watchlist</h2>
 
     <div class="container" style="display: flex">
-      <div class="row">
+      <div class="row mx-auto">
         <ul class="list-group">
           {% for listing in listings %}
           <li class="list-group-item d-flex justify-content-between align-items-center" style="width: 60vw;">
@@ -12,8 +12,8 @@
             <div class="card-body">
               <h5 class="card-title">{{ listing.title }}</h5>
               <p class="card-text">{{ listing.description }}</p>
-              <div class="row align-items-center">
-                <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
+              <div class="row align-items-center" style="margin-left: 0em;">
+                <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary" style="margin-right: .5em;">View</a>
                 <form action="{% url 'watchlist_remove' listing.id %}" method="POST">
                   {% csrf_token %}
                   <input type="submit" class="btn btn-secondary" value="Remove from Watchlist">
