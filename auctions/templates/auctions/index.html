@@ -7,7 +7,7 @@
       <div class="card-deck" style="display: flex; width: 80vw">
         {% for listing in listings %}
           {% if listing.active_status == True %}
-            <div class="card" style="width: 40vw">
+            <div class="card col-sm-4">
               <img src="{{ listing.image_url }}" style="height: 40vh">
               <div class="card-body">
                 <h5 class="card-title">{{ listing.title }}</h5>

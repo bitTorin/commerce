@@ -1,10 +1,10 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-  <div class="container">
+  <div class="container mx-auto">
     <div class="row">
-      <div class="col-md-auto">
-        <div class="card">
+      <div class="col col-lg-2" style="margin-right: 8em;">
+        <div class="card" style="width: 18rem">
           <div class="card-header">
 
             {% if listing in watchlist %}
@@ -23,12 +23,11 @@
 
           </div>
           <div class="card-img-bottom">
-            <img src="{{ listing.image_url }}">
+            <img src="{{ listing.image_url }}" style="width: 100%">
           </div>
           <div>
             {% if listing.active_status == True %}
               {% if user == listing_user %}
-                <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">Top Bid: {{ top_bid }}</div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
                     <form action="{% url 'accept_bid' listing.id %}" method="POST">
@@ -36,6 +35,7 @@
                       <input type="submit" value="Close Auction">
                     </form>
                   </li>
+                  <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">Top Bid: {{ top_bid }}</div>
                   <li class="list-group-item">
                     {% for bid in bids %}
                       <table>
@@ -57,7 +57,7 @@
                   <li class="list-group-item">
                     <form action="{% url 'place_bid' listing.id %}" method="POST">
                       {% csrf_token %}
-                      <input id="bid_price" name="bid_price" placeholder="$0.00">
+                      <input id="bid_price" name="bid_price" placeholder="$0.00" style="width: 6em; margin-right: .5em;">
                       <input type="submit" value="Place Bid">
                     </form>
                   </li>
