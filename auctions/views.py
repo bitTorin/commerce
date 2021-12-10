@@ -38,6 +38,7 @@ class NewBidForm(forms.Form):
         fields = ('price',)
 
 def index(request):
+
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all(),
     })
@@ -252,7 +253,7 @@ def comment(request, listing_id):
 
 def category(request, slug):
     category_list = Category.objects.all()
-    
+
     if slug == 'all':
         listings = Listing.objects.all()
         return render(request, "auctions/category.html", {
