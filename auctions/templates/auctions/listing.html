@@ -37,17 +37,17 @@
                   </li>
                   <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">Top Bid: {{ top_bid }}</div>
                   <li class="list-group-item">
-                    {% for bid in bids %}
                       <table>
                         <tr>
                           <th>Bid History</th>
                         </tr>
+                        {% for bid in bids %}
                         <tr>
+                          <td><a href="">{{ bid.bid_user }}</a></td>
                           <td>{{ bid.price }}</td>
-                          <td>{{ bid.bid_user }}</td>
                         </tr>
+                        {% endfor %}
                       </table>
-                    {% endfor %}
                   </li>
                 </ul>
               {% else %}
@@ -62,17 +62,17 @@
                     </form>
                   </li>
                   <li class="list-group-item">                 
-                    {% for bid in bids %}
-                      <table>
-                        <tr>
-                          <th>Bid History</th>
-                        </tr>
-                        <tr>
-                          <td>{{ bid.price }}</td>
-                          <td>{{ bid.bid_user }}</td>
-                        </tr>
-                      </table>
-                    {% endfor %}
+                    <table>
+                      <tr>
+                        <th>Bid History</th>
+                      </tr>
+                      {% for bid in bids %}
+                      <tr>
+                        <td><a href="">{{ bid.bid_user }}</a></td>
+                        <td>{{ bid.price }}</td>
+                      </tr>
+                      {% endfor %}
+                    </table>
                   </li>
                 </ul>
               {% endif %}
@@ -83,17 +83,17 @@
               <hr>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  {% for bid in bids %}
-                    <table class="text-muted">
+                  <table class="text-muted">
+                    <tr>
+                      <th>Bid History</th>
+                    </tr>
+                    {% for bid in bids %}
                       <tr>
-                        <th>Bid History</th>
-                      </tr>
-                      <tr>
+                        <td><a href="">{{ bid.bid_user }}</a></td>
                         <td>{{ bid.price }}</td>
-                        <td>{{ bid.bid_user }}</td>
                       </tr>
-                    </table>
-                  {% endfor %}
+                    {% endfor %}
+                  </table>
                 </li>
               </ul>
               {% elif user == top_bid.bid_user %}
@@ -101,17 +101,17 @@
                 <hr>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
-                    {% for bid in bids %}
-                      <table class="text-muted">
+                    <table class="text-muted">
+                      <tr>
+                        <th>Bid History</th>
+                      </tr>
+                      {% for bid in bids %}
                         <tr>
-                          <th>Bid History</th>
-                        </tr>
-                        <tr>
+                          <td><a href="">{{ bid.bid_user }}</a></td>
                           <td>{{ bid.price }}</td>
-                          <td>{{ bid.bid_user }}</td>
                         </tr>
-                      </table>
-                    {% endfor %}
+                      {% endfor %}
+                    </table>
                   </li>
                 </ul>
               {% else %}
@@ -120,17 +120,17 @@
                 <hr>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
-                    {% for bid in bids %}
-                      <table class="text-muted">
+                    <table class="text-muted">
+                      <tr>
+                        <th>Bid History</th>
+                      </tr>
+                      {% for bid in bids %}
                         <tr>
-                          <th>Bid History</th>
-                        </tr>
-                        <tr>
+                          <td><a href="">{{ bid.bid_user }}</a></td>
                           <td>{{ bid.price }}</td>
-                          <td>{{ bid.bid_user }}</td>
                         </tr>
-                      </table>
-                    {% endfor %}
+                      {% endfor %}
+                    </table>
                   </li>
                 </ul>
               {% endif %}

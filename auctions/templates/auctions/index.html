@@ -7,12 +7,14 @@
       <div class="card-deck" style="display: flex; width: 80vw">
         {% for listing in listings %}
           {% if listing.active_status == True %}
-            <div class="card col-sm-4">
-              <img src="{{ listing.image_url }}" style="height: 40vh">
-              <div class="card-body">
-                <h5 class="card-title">{{ listing.title }}</h5>
-                <p class="card-text">{{ listing.description }}</p>
-                <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
+            <div class="col-md-4" style="margin-bottom: 2em;">
+              <div class="card h-100">
+                <img src="{{ listing.image_url }}" style="height: 40vh;">
+                <div class="card-body">
+                  <h5 class="card-title">{{ listing.title }}</h5>
+                  <p class="card-text">{{ listing.description }}</p>
+                  <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
+                </div>
               </div>
             </div>
           {% endif %}
