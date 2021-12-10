@@ -25,144 +25,149 @@
           <div class="card-img-bottom">
             <img src="{{ listing.image_url }}">
           </div>
+          <div>
+            {% if listing.active_status == True %}
+              {% if user == listing_user %}
+                <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">Top Bid: {{ top_bid }}</div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <form action="{% url 'accept_bid' listing.id %}" method="POST">
+                      {% csrf_token %}
+                      <input type="submit" value="Close Auction">
+                    </form>
+                  </li>
+                  <li class="list-group-item">
+                    {% for bid in bids %}
+                      <table>
+                        <tr>
+                          <th>Bid History</th>
+                        </tr>
+                        <tr>
+                          <td>{{ bid.price }}</td>
+                          <td>{{ bid.bid_user }}</td>
+                        </tr>
+                      </table>
+                    {% endfor %}
+                  </li>
+                </ul>
+              {% else %}
+                <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">Current Bid: {{ top_bid }}</div>
+                <hr>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <form action="{% url 'place_bid' listing.id %}" method="POST">
+                      {% csrf_token %}
+                      <input id="bid_price" name="bid_price" placeholder="$0.00">
+                      <input type="submit" value="Place Bid">
+                    </form>
+                  </li>
+                  <li class="list-group-item">                 
+                    {% for bid in bids %}
+                      <table>
+                        <tr>
+                          <th>Bid History</th>
+                        </tr>
+                        <tr>
+                          <td>{{ bid.price }}</td>
+                          <td>{{ bid.bid_user }}</td>
+                        </tr>
+                      </table>
+                    {% endfor %}
+                  </li>
+                </ul>
+              {% endif %}
+            {% else %}
+              {% if user == listing_user %}
+              <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">You closed this auction.</div>
+              <div class="card-title font-weight-bold text-center">Winning bid: {{ top_bid.price }} by <a href="">{{ top_bid.bid_user }}</a></div>
+              <hr>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  {% for bid in bids %}
+                    <table class="text-muted">
+                      <tr>
+                        <th>Bid History</th>
+                      </tr>
+                      <tr>
+                        <td>{{ bid.price }}</td>
+                        <td>{{ bid.bid_user }}</td>
+                      </tr>
+                    </table>
+                  {% endfor %}
+                </li>
+              </ul>
+              {% elif user == top_bid.bid_user %}
+                <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">You won this auction for {{ top_bid.price }}!</div>
+                <hr>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    {% for bid in bids %}
+                      <table class="text-muted">
+                        <tr>
+                          <th>Bid History</th>
+                        </tr>
+                        <tr>
+                          <td>{{ bid.price }}</td>
+                          <td>{{ bid.bid_user }}</td>
+                        </tr>
+                      </table>
+                    {% endfor %}
+                  </li>
+                </ul>
+              {% else %}
+                <div class="card-title font-weight-bold text-center" style="padding-top: 1em;">Auction closed.</div>
+                <div class="card-title font-weight-bold text-center">Winning bid: {{ top_bid.price }} by <a href="">{{ top_bid.bid_user }}</a></div>
+                <hr>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    {% for bid in bids %}
+                      <table class="text-muted">
+                        <tr>
+                          <th>Bid History</th>
+                        </tr>
+                        <tr>
+                          <td>{{ bid.price }}</td>
+                          <td>{{ bid.bid_user }}</td>
+                        </tr>
+                      </table>
+                    {% endfor %}
+                  </li>
+                </ul>
+              {% endif %}
+            {% endif %}
+          </div>
         </div>
       </div>
       <div class="col col-lg-2">
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 18rem">
           <div class="card-body">
             <h5 class="card-title font-weight-bold">{{ listing.title }}</h5>
             <p class="card-text">{{ listing.description }}</p>
           </div>
           <ul class="list-group list-group-flush" id="accordian">
             <li class="list-group-item">Listed by: <a href="">{{ listing.listing_user }}</a></li>
-            <li class="list-group-item">Category: <a href="">{{ listing.category.name }}</a></li>
+            <li class="list-group-item">Category: <a href="{% url 'category' listing.category.slug %}">{{ listing.category.name }}</a></li>
             <li class="list-group-item">Comments:
-              <table>
+              <table style="margin-top: 0.5em;">
                 {% for comment in comments %}
                   <tr>
-                    <td><a href="">{{ comment.user }}</a></td>
-                    <td>{{ comment.text }}</td>
+                    <td class="align-text-top"><a href="">{{ comment.user }}</a></td>
+                    <td class="align-text-top" style="padding-left: 10px; font-size: small; font-style: italic;">{{ comment.text }}</td>
                   </tr>
                 {% endfor %}
               </table>
-              <form action="{% url 'comment' listing.id %}" method="POST">
+              <form class="form-inline" action="{% url 'comment' listing.id %}" method="POST" style="margin-top: 0.5em;">
                 {% csrf_token %}
-                <input id="comment_text" name="comment_text" placeholder="Enter Comment Here">
-                <input type="submit" value="Submit">
+                  <div class="form-group">
+                    <input id="comment_text" name="comment_text" placeholder="Enter Comment Here" style="width: 10em; margin-right: .5em;">
+                  </div>
+                  <div class="form-group">
+                    <input type="submit" value="Submit">
+                  </div>
+                </div>
               </form>
             </li>
           </ul>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-auto">
-        <div class="card">
-          {% if listing.active_status == True %}
-            {% if user == listing_user %}
-            <div class="card-title font-weight-bold">Top Bid: {{ top_bid }}</div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <form action="{% url 'accept_bid' listing.id %}" method="POST">
-                  {% csrf_token %}
-                  <input type="submit" value="Close Auction">
-                </form>
-              </li>
-              <li class="list-group-item">
-                {% for bid in bids %}
-                  <table>
-                    <tr>
-                      <th>Bid History</th>
-                    </tr>
-                    <tr>
-                      <td>{{ bid.price }}</td>
-                      <td>{{ bid.bid_user }}</td>
-                    </tr>
-                  </table>
-                {% endfor %}
-              </li>
-            </ul>
-            {% else %}
-              <div class="card-title font-weight-bold">Current Bid: {{ top_bid }}</div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                  <form action="{% url 'place_bid' listing.id %}" method="POST">
-                    {% csrf_token %}
-                    <input id="bid_price" name="bid_price" placeholder="$0.00">
-                    <input type="submit" value="Place Bid">
-                  </form>
-                </li>
-                <li class="list-group-item">                 
-                  {% for bid in bids %}
-                    <table>
-                      <tr>
-                        <th>Bid History</th>
-                      </tr>
-                      <tr>
-                        <td>{{ bid.price }}</td>
-                        <td>{{ bid.bid_user }}</td>
-                      </tr>
-                    </table>
-                  {% endfor %}
-                </li>
-              </ul>
-            {% endif %}
-          {% else %}
-            {% if user == listing_user %}
-            <div class="card-title font-weight-bold">You closed this auction.</div>
-            <div class="card-title font-weight-bold">Winning bid: {{ top_bid.price }} by <a href="">{{ top_bid.bid_user }}</a></div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                {% for bid in bids %}
-                  <table>
-                    <tr>
-                      <th>Bid History</th>
-                    </tr>
-                    <tr>
-                      <td>{{ bid.price }}</td>
-                      <td>{{ bid.bid_user }}</td>
-                    </tr>
-                  </table>
-                {% endfor %}
-              </li>
-            </ul>
-            {% elif user == top_bid.bid_user %}
-            <div class="card-title font-weight-bold">You won this auction!</div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                {% for bid in bids %}
-                  <table>
-                    <tr>
-                      <th>Bid History</th>
-                    </tr>
-                    <tr>
-                      <td>{{ bid.price }}</td>
-                      <td>{{ bid.bid_user }}</td>
-                    </tr>
-                  </table>
-                {% endfor %}
-              </li>
-            </ul>
-            {% else %}
-              <div class="card-title font-weight-bold">Auction closed.</div>
-              <div class="card-title font-weight-bold">Winning bid: {{ top_bid.price }} by <a href="">{{ top_bid.bid_user }}</a></div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                  {% for bid in bids %}
-                    <table>
-                      <tr>
-                        <th>Bid History</th>
-                      </tr>
-                      <tr>
-                        <td>{{ bid.price }}</td>
-                        <td>{{ bid.bid_user }}</td>
-                      </tr>
-                    </table>
-                  {% endfor %}
-                </li>
-              </ul>
-            {% endif %}
-          {% endif %}
         </div>
       </div>
     </div>
