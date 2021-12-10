@@ -36,6 +36,21 @@
           <ul class="list-group list-group-flush" id="accordian">
             <li class="list-group-item">Listed by: <a href="">{{ listing.listing_user }}</a></li>
             <li class="list-group-item">Category: <a href="">{{ listing.category.name }}</a></li>
+            <li class="list-group-item">Comments:
+              <table>
+                {% for comment in comments %}
+                  <tr>
+                    <td><a href="">{{ comment.user }}</a></td>
+                    <td>{{ comment.text }}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+              <form action="{% url 'comment' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input id="comment_text" name="comment_text" placeholder="Enter Comment Here">
+                <input type="submit" value="Submit">
+              </form>
+            </li>
           </ul>
         </div>
       </div>
@@ -54,12 +69,10 @@
                 </form>
               </li>
               <li class="list-group-item">
-                Bid History
                 {% for bid in bids %}
                   <table>
                     <tr>
-                      <th>Price</th>
-                      <th>User</th>
+                      <th>Bid History</th>
                     </tr>
                     <tr>
                       <td>{{ bid.price }}</td>
@@ -79,13 +92,11 @@
                     <input type="submit" value="Place Bid">
                   </form>
                 </li>
-                <li class="list-group-item">
-                  Bid History
+                <li class="list-group-item">                 
                   {% for bid in bids %}
                     <table>
                       <tr>
-                        <th>Price</th>
-                        <th>User</th>
+                        <th>Bid History</th>
                       </tr>
                       <tr>
                         <td>{{ bid.price }}</td>
@@ -102,12 +113,10 @@
             <div class="card-title font-weight-bold">Winning bid: {{ top_bid.price }} by <a href="">{{ top_bid.bid_user }}</a></div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
-                Bid History
                 {% for bid in bids %}
                   <table>
                     <tr>
-                      <th>Price</th>
-                      <th>User</th>
+                      <th>Bid History</th>
                     </tr>
                     <tr>
                       <td>{{ bid.price }}</td>
@@ -121,12 +130,10 @@
             <div class="card-title font-weight-bold">You won this auction!</div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
-                Bid History
                 {% for bid in bids %}
                   <table>
                     <tr>
-                      <th>Price</th>
-                      <th>User</th>
+                      <th>Bid History</th>
                     </tr>
                     <tr>
                       <td>{{ bid.price }}</td>
@@ -141,12 +148,10 @@
               <div class="card-title font-weight-bold">Winning bid: {{ top_bid.price }} by <a href="">{{ top_bid.bid_user }}</a></div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  Bid History
                   {% for bid in bids %}
                     <table>
                       <tr>
-                        <th>Price</th>
-                        <th>User</th>
+                        <th>Bid History</th>
                       </tr>
                       <tr>
                         <td>{{ bid.price }}</td>
@@ -158,32 +163,6 @@
               </ul>
             {% endif %}
           {% endif %}
-        </div>
-      </div>
-      <div class="col col-lg-2">
-        <div class="card">
-          <div class="card-header">
-            <ul class="list-group list-group-flush">
-              <h5>Comments</h5>
-              <li class="list-group-item">
-                <table>
-                  {% for comment in comments %}
-                    <tr>
-                      <td>{{ comment.user }}</td>
-                      <td>{{ comment.text }}</td>
-                    </tr>
-                  {% endfor %}
-                </table>
-              </li>
-              <li class="list-group-item">
-                <form action="{% url 'comment' listing.id %}" method="POST">
-                  {% csrf_token %}
-                  <input id="comment_text" name="comment_text" placeholder="Enter Comment Here">
-                  <input type="submit" value="Submit">
-                </form>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

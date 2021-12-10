@@ -267,4 +267,5 @@ def category(request, slug):
         return render(request, "auctions/category.html", {
             "categories": category_list,
             "listings": listings,
+            "input_slug": input_slug,
         })
