@@ -18,7 +18,11 @@
                 <img src="{{ listing.image_url }}" style="height: 40vh">
                 <div class="card-body">
                   <h5 class="card-title">{{ listing.title }}</h5>
-                  <h6 class="card-text">Current Price: {{ listing.bid }}</h6>
+                  {% for bids in listing.bids.all|dictsort:"listing.id" %}
+                    {% if forloop.last %}
+                      <h6 class="card-text">Current Price: {{ bids.price }}</h6>
+                    {% endif %}
+                  {% endfor %}
                   <p class="card-text">{{ listing.description }}</p>
                   <a href="{% url 'listing' listing.id %}" method="POST" class="btn btn-primary">View</a>
                 </div>

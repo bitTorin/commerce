@@ -25,9 +25,9 @@ class Listing(models.Model):
         return f"{self.title}"
 
 class Bid(models.Model):
-    price = MoneyField(decimal_places=2, default=0.00, default_currency='USD', max_digits=11,)
+    price = MoneyField(decimal_places=2, default=0.00, default_currency='USD', max_digits=11)
     bid_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bid_user")
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True, related_name="bids" )
 
     def __str__(self):
         return f"{self.price}"

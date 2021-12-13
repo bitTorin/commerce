@@ -38,10 +38,8 @@ class NewBidForm(forms.Form):
         fields = ('price',)
 
 def index(request):
-    
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all(),
-        "price": Bid.objects.filter(pk=listing).order_by('-price')[0]
     })
 
 
